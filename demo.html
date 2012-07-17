@@ -1,0 +1,108 @@
+<html>
+<head>
+<meta charset="utf-8">
+<!-- <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script> -->
+<script src="select-variants.js" type="text/javascript"></script>
+<style type="text/css">
+/** Some really simple styles for the form elements **/
+form{
+  width: 250px; text-align: right; 
+}
+form label{
+  display: block; 
+}
+form select{
+  margin-left: 10px;
+}
+</style>
+</head>
+<body>
+<h1>Select-Variants.js DEMO</h1>
+<form>
+  <p>Ok, it's really simple. Just play with the form below and you'll know what it is all about without reading the docs ;)</p>
+  <div id="form-container"></div>
+  <input type="submit" class="submit"></input>
+  <input type="hidden" name="last_selected" id="selected_id"></input>
+</form>
+<p>
+  <!-- Here goes the price of currently selected item variant -->
+  Price: <span class="price"></span>
+</p>
+<p>
+  <!-- How *exactly* the selected item looks like -->
+  Selected item: <pre class="item">none</pre>
+</p>
+<script>
+// Add the variants 
+v = new Variants
+v.add({
+    size: 1,
+    width: "XXX",
+    toughness: "M",
+    color: "red"
+  }, {id: "SKU1", quantity: 3, price: 40})
+v.add({
+    size: 0.5,
+    width: "XXX",
+    toughness: "H",
+    color: "white"
+  }, {id: "SKU2", quantity: 0, price: 40})
+v.add({
+    size: 1,
+    width: "XXX",
+    toughness: "M",
+    color: "black"
+  }, {id: "SKU3", quantity: 3, price: 35})
+
+v.add({
+    size: 0.5,
+    width: "XX",
+    toughness: "M",
+    color: "black"
+  }, {id: "SKU4", quantity: 3, price: 35})
+
+// Add custom check (check quantity field)
+// Item SKU2 will be unavailable as its quantity = 0 ( < 1 )
+v.addCheck(function(variant){
+  return variant.getVal("quantity") < 1 ? true : false;
+});
+
+// Set default value
+VariantForm.defaultValue = "please select a value";
+
+// Create the Variant Form (!). It will render the stuff and perform interactions
+vf = new VariantForm(v , document.getElementById("form-container"));
+
+// Add change listener (fired when user changes select option)
+vf.addChangeListener(function(newVariant){
+  // update price value
+  var price = document.querySelector(".price");
+  var hidden_id = document.getElementById("selected_id");
+  var item = document.querySelector(".item"); // DEBUG JSON OUTPUT
+  
+  // if we have some valid variant / variant != null
+  if(newVariant){
+    item.innerHTML = JSON.stringify(newVariant, undefined, 2);
+    price.innerHTML = "$" + newVariant.values.price;
+    hidden_id.value = newVariant.values.id
+  }else{
+    item.innerHTML = "none";
+    price.innerHTML = "none";
+  }
+});
+
+// Submit event listener
+document.querySelector("form").addEventListener("submit", function(e){
+  if(!vf.getCurrentVariant()){
+    alert("Sorry, you must select a valid item first ;)");
+    e.preventDefault();
+  }else{
+    alert("Sending you new cool item!");
+  }
+});
+</script>
+
+</body>
+</html>
+
+
