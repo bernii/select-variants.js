@@ -61,4 +61,4 @@ BooM! And the magic happens ;)
 
 ## IV. Want to know more?
 Just check out the demo.html or live demo at [JsFiddle](http://jsfiddle.net/berni/tDDfj/).
-Also, feel free to [contact me](berni+githubsv@extensa.pl) if you have some thoughts, problems or you just want to say hi ;)
+Also, feel free to [contact me](mailto:berni+githubsv@extensa.pl) if you have some thoughts, problems or you just want to say hi ;)
